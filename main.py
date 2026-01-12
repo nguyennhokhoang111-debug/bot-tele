@@ -3,9 +3,9 @@ import os
 
 TOKEN = os.getenv("BOT_TOKEN")
 
-TOTAL = 2
+TOTAL = 9
 
-ALL_USERS = ["adinamizaba323", "linchen68"]
+ALL_USERS = ["adinamizaba323", "osn_zenky", "amelinda19", "nb_noel", "OSN_CLAUDIA", "OSN_MERIDA", "MeoMeoa0", "shenlongpr", "osn_olia"]
 
 members_clicked = set()
 
