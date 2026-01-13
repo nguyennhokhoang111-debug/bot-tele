@@ -5,7 +5,32 @@ TOKEN = os.getenv("BOT_TOKEN")
 
 TOTAL = 9
 
-ALL_USERS = ["adinamizaba323", "osn_zenky", "amelinda19", "nb_noel", "OSN_CLAUDIA", "OSN_MERIDA", "MeoMeoa0", "shenlongpr", "osn_olia"]
+ALL_USERS = [
+    "adinamizaba323",
+    "osn_zenky",
+    "amelinda19",
+    "nb_noel",
+    "OSN_CLAUDIA",
+    "OSN_MERIDA",
+    "MeoMeoa0",
+    "shenlongpr",
+    "osn_olia"
+]
+
+
+NAME_USERS = [
+    "DINAMIZABA",
+    "ZENKY",
+    "AMELINDA",
+    "NOEL",
+    "CLAUDIA",
+    "MERIDA",
+    "BLOOM",
+    "SHENLONG",
+    "OLIA"
+]
+
+USER_NAME_MAP = dict(zip(ALL_USERS, NAME_USERS))
 
 members_clicked = set()
 
@@ -30,16 +55,19 @@ def handle_message(update, context):
     if text == "1":
         members_clicked.add(username)
         if full:
-            return  # Nếu đang full, không reply nữa
+            return 
 
-        # Tạo tin nhắn hiển thị số người đã nhắn và ai còn thiếu
-        missing = [u for u in ALL_USERS if u not in members_clicked]
+        missing_users = [u for u in ALL_USERS if u not in members_clicked]
+        missing_names = [USER_NAME_MAP.get(u, u) for u in missing_users]
+
         count = len(members_clicked)
         msg = f"Số người đã điểm danh: {count}/{TOTAL}"
-        if missing:
-            msg += "\nCòn thiếu: " + " ".join([f"@{u}" for u in missing])
+
+        if missing_names:
+            msg += "\nCòn thiếu: " + ", ".join(missing_names)
         else:
             msg += "\n✅ Đã đủ tất cả mọi người!"
+
         update.message.reply_text(msg)
 
 def main():
