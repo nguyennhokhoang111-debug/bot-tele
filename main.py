@@ -17,7 +17,6 @@ ALL_USERS = [
     "osn_olia"
 ]
 
-
 NAME_USERS = [
     "DINAMIZABA",
     "ZENKY",
@@ -33,17 +32,14 @@ NAME_USERS = [
 USER_NAME_MAP = dict(zip(ALL_USERS, NAME_USERS))
 
 members_clicked = set()
-
 full = False
-
 
 def full_command(update, context):
     global members_clicked, full
     full = True
-    update.message.reply_text(f"✅ Đã đủ tất cả!")
-    # Reset bộ đếm để có thể bắt đầu lượt mới nếu cần
+    update.message.reply_text("✅ Đã đủ tất cả!")
     members_clicked.clear()
-    full = False  # Sau khi báo xong, cho phép nhận lượt mới
+    full = False  # Cho phép lượt mới
 
 def handle_message(update, context):
     global members_clicked, full
@@ -55,7 +51,7 @@ def handle_message(update, context):
     if text == "1":
         members_clicked.add(username)
         if full:
-            return 
+            return
 
         missing_users = [u for u in ALL_USERS if u not in members_clicked]
         missing_names = [USER_NAME_MAP.get(u, u) for u in missing_users]
@@ -68,18 +64,13 @@ def handle_message(update, context):
         else:
             msg += "\n✅ Đã đủ tất cả mọi người!"
 
-        update.message.reply_text(msg)
-
-#TESTCOILENCHUA
+        update.message.reply_text(msg, parse_mode=None)  # Không tag, chỉ hiển thị tên
 
 def main():
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
 
-    # Thêm lệnh /full
     dp.add_handler(CommandHandler("full", full_command))
-
-    # Bắt tất cả tin nhắn
     dp.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_message))
 
     updater.start_polling()
